@@ -1,5 +1,0 @@
-c1 cow 23:59 f1
-c2 pig 00:30 g1
-c3 sheep 10:50 g5
-c2 pig 4:40 f6
-c6 dog 20:50 t5
