@@ -6,6 +6,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
     <script>
         // JavaScript code for Cattle Data Management
 
@@ -65,17 +79,41 @@
             if (cattleData) {
                 var cattleList = JSON.parse(cattleData);
 
-                // Display the cattle data on the webpage
-                var output = "";
+                // Generate the table HTML dynamically
+                var table = document.createElement("table");
+                var thead = document.createElement("thead");
+                var tbody = document.createElement("tbody");
+
+                // Create table header
+                var headerRow = document.createElement("tr");
+                var headers = ["Cattle ID", "Cattle Name", "Feed Time", "Food"];
+                for (var h = 0; h < headers.length; h++) {
+                    var headerCell = document.createElement("th");
+                    headerCell.textContent = headers[h];
+                    headerRow.appendChild(headerCell);
+                }
+                thead.appendChild(headerRow);
+
+                // Create table rows
                 for (var i = 0; i < cattleList.length; i++) {
                     var cattle = cattleList[i];
-                    output += "<p>Cattle ID: " + cattle.cattleId + "</p>";
-                    output += "<p>Cattle Name: " + cattle.cattleName + "</p>";
-                    output += "<p>Feed Time: " + cattle.feedTime + "</p>";
-                    output += "<p>Food: " + cattle.food + "</p>";
-                    output += "<hr>";
+                    var row = document.createElement("tr");
+                    var cells = [cattle.cattleId, cattle.cattleName, cattle.feedTime, cattle.food];
+                    for (var j = 0; j < cells.length; j++) {
+                        var cell = document.createElement("td");
+                        cell.textContent = cells[j];
+                        row.appendChild(cell);
+                    }
+                    tbody.appendChild(row);
                 }
-                document.getElementById("dataDisplay").innerHTML = output;
+
+                // Add table header and rows to the table
+                table.appendChild(thead);
+                table.appendChild(tbody);
+
+                // Display the table on the webpage
+                document.getElementById("dataDisplay").innerHTML = "";
+                document.getElementById("dataDisplay").appendChild(table);
             }
         }
 
@@ -84,27 +122,56 @@
             var cattleData = localStorage.getItem("cattleData");
             if (cattleData) {
                 var cattleList = JSON.parse(cattleData);
-
+        
                 // Sort the cattle data by feed time
                 cattleList.sort(function(a, b) {
                     var timeA = new Date("1970/01/01 " + a.feedTime);
                     var timeB = new Date("1970/01/01 " + b.feedTime);
                     return timeA - timeB;
                 });
-
-                // Display the cattle data sorted by feed time on the webpage
-                var output = "";
+        
+                // Create the table element
+                var table = document.createElement("table");
+                table.classList.add("data-table");
+        
+                // Create the table header row
+                var thead = document.createElement("thead");
+                var headerRow = document.createElement("tr");
+                var headers = ["Cattle ID", "Cattle Name", "Feed Time", "Food"];
+                for (var i = 0; i < headers.length; i++) {
+                    var headerCell = document.createElement("th");
+                    headerCell.textContent = headers[i];
+                    headerRow.appendChild(headerCell);
+                }
+                thead.appendChild(headerRow);
+        
+                // Create the table body
+                var tbody = document.createElement("tbody");
+        
+                // Add rows to the table body with cattle data
                 for (var i = 0; i < cattleList.length; i++) {
                     var cattle = cattleList[i];
-                    output += "<p>Cattle ID: " + cattle.cattleId + "</p>";
-                    output += "<p>Cattle Name: " + cattle.cattleName + "</p>";
-                    output += "<p>Feed Time: " + cattle.feedTime + "</p>";
-                    output += "<p>Food: " + cattle.food + "</p>";
-                    output += "<hr>";
+                    var row = document.createElement("tr");
+                    var cells = [cattle.cattleId, cattle.cattleName, cattle.feedTime, cattle.food];
+                    for (var j = 0; j < cells.length; j++) {
+                        var cell = document.createElement("td");
+                        cell.textContent = cells[j];
+                        row.appendChild(cell);
+                    }
+                    tbody.appendChild(row);
                 }
-                document.getElementById("dataDisplay").innerHTML = output;
+        
+                // Add table header and rows to the table
+                table.appendChild(thead);
+                table.appendChild(tbody);
+        
+                // Display the table on the webpage
+                document.getElementById("dataDisplay").innerHTML = "";
+                document.getElementById("dataDisplay").appendChild(table);
             }
         }
+        
+        
     </script>
 </head>
 <body>
