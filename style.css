@@ -1,0 +1,38 @@
+body{
+    
+    margin: 0px;    
+    text-align: center;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+.top_container{
+    background-color: #E4F9F5;
+    position: relative;
+    padding: 100px;
+}
+h1{
+    margin: 50px auto 0 auto;
+    font-family: 'Sacramento',sans-serif;
+    font-size: 5.265rem;
+    color: #66BFBF;
+}
+h2{
+    font-family: sans-serif;
+    font-size: 2.5rem;
+    color: #66BFBF;
+}
+h3{
+    color: #11999E;
+}
+.social{
+    height: 30px;
+    width: 30px;
+}
+.photo{
+    height: 250px;
+    width: 200px;
+    border-radius: 100%;
+}
+button{
+    border-radius: 10px;
+    background-color: #66BFBF;
+}
