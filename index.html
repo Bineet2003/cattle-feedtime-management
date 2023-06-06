@@ -6,35 +6,209 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script>
+        // JavaScript code for Cattle Data Management
+
+        function addData() {
+            var cattleId = document.getElementById("cattleId").value;
+            var cattleName = document.getElementById("cattleName").value;
+            var feedTime = document.getElementById("feedTime").value;
+            var food = document.getElementById("food").value;
+
+            // Create a new cattle object
+            var cattle = {
+                cattleId: cattleId,
+                cattleName: cattleName,
+                feedTime: feedTime,
+                food: food
+            };
+
+            // Retrieve existing cattle data from Local Storage
+            var cattleData = localStorage.getItem("cattleData");
+            var cattleList = [];
+            if (cattleData) {
+                cattleList = JSON.parse(cattleData);
+            }
+
+            // Add the new cattle object to the list
+            cattleList.push(cattle);
+
+            // Save the updated cattle data to Local Storage
+            localStorage.setItem("cattleData", JSON.stringify(cattleList));
+
+            alert("Cattle data added successfully.");
+        }
+
+        function removeData() {
+            var cattleId = document.getElementById("removeCattleId").value;
+
+            // Retrieve existing cattle data from Local Storage
+            var cattleData = localStorage.getItem("cattleData");
+            if (cattleData) {
+                var cattleList = JSON.parse(cattleData);
+
+                // Remove the cattle object with matching cattleId
+                cattleList = cattleList.filter(function(cattle) {
+                    return cattle.cattleId !== cattleId;
+                });
+
+                // Save the updated cattle data to Local Storage
+                localStorage.setItem("cattleData", JSON.stringify(cattleList));
+
+                alert("Cattle data removed successfully.");
+            }
+        }
+
+        function displayData() {
+            // Retrieve existing cattle data from Local Storage
+            var cattleData = localStorage.getItem("cattleData");
+            if (cattleData) {
+                var cattleList = JSON.parse(cattleData);
+        
+                // Get the current time
+                var currentTime = new Date();
+        
+                // Filter cattle data with feed time after the current time
+                var filteredCattleList = cattleList.filter(function(cattle) {
+                    var feedTime = new Date("1970/01/01 " + cattle.feedTime);
+                    return feedTime > currentTime;
+                });
+        
+                // Sort the filtered cattle data by feed time
+                filteredCattleList.sort(function(a, b) {
+                    var timeA = new Date("1970/01/01 " + a.feedTime);
+                    var timeB = new Date("1970/01/01 " + b.feedTime);
+                    return timeA - timeB;
+                });
+        
+                // Display the filtered and sorted cattle data
+                var output = "";
+                for (var i = 0; i < filteredCattleList.length; i++) {
+                    var cattle = filteredCattleList[i];
+                    output += "<p>Cattle ID: " + cattle.cattleId + "</p>";
+                    output += "<p>Cattle Name: " + cattle.cattleName + "</p>";
+                    output += "<p>Feed Time: " + cattle.feedTime + "</p>";
+                    output += "<p>Food: " + cattle.food + "</p>";
+                    output += "<hr>";
+                }
+                document.getElementById("dataDisplay").innerHTML = output;
+            }
+        }
+        
+
+        function displayDataByTime() {
+            // Retrieve existing cattle data from Local Storage
+            var cattleData = localStorage.getItem("cattleData");
+            if (cattleData) {
+                var cattleList = JSON.parse(cattleData);
+        
+                // Get the current time
+                var currentTime = new Date();
+        
+                // Filter cattle data with feed time after the current time
+                var filteredCattleList = cattleList.filter(function(cattle) {
+                    var feedTime = new Date("1970/01/01 " + cattle.feedTime);
+                    return feedTime > currentTime;
+                });
+        
+                // Sort the filtered cattle data by feed time
+                filteredCattleList.sort(function(a, b) {
+                    var timeA = new Date("1970/01/01 " + a.feedTime);
+                    var timeB = new Date("1970/01/01 " + b.feedTime);
+                    return timeA - timeB;
+                });
+        
+                // Display the current time above the table
+                var currentTimeDisplay = document.createElement("p");
+                currentTimeDisplay.textContent = "Current Time: " + currentTime.toLocaleTimeString();
+                document.getElementById("dataDisplay").innerHTML = "";
+                document.getElementById("dataDisplay").appendChild(currentTimeDisplay);
+        
+                // Create the table element
+                var table = document.createElement("table");
+                table.classList.add("data-table");
+        
+                // Create the table header row
+                var thead = document.createElement("thead");
+                var headerRow = document.createElement("tr");
+                var headers = ["Cattle ID", "Cattle Name", "Feed Time", "Food"];
+                for (var i = 0; i < headers.length; i++) {
+                    var headerCell = document.createElement("th");
+                    headerCell.textContent = headers[i];
+                    headerRow.appendChild(headerCell);
+                }
+                thead.appendChild(headerRow);
+        
+                // Create the table body
+                var tbody = document.createElement("tbody");
+        
+                // Add rows to the table body with filtered and sorted cattle data
+                for (var i = 0; i < filteredCattleList.length; i++) {
+                    var cattle = filteredCattleList[i];
+                    var row = document.createElement("tr");
+        
+                    // Create cells for each property in cattle object
+                    for (var property in cattle) {
+                        var cell = document.createElement("td");
+                        cell.textContent = cattle[property];
+                        row.appendChild(cell);
+                    }
+        
+                    tbody.appendChild(row);
+                }
+        
+                // Add table header and rows to the table
+                table.appendChild(thead);
+                table.appendChild(tbody);
+        
+                // Append the table to the dataDisplay div element
+                document.getElementById("dataDisplay").appendChild(table);
+            }
+        }
+        
+        
+        
+        
+    </script>
 </head>
 <body>
     <h1>Cattle Data Management</h1>
-    <form action="add_data.php" method="post">
-        <label for="cattleId">Cattle ID:</label>
-        <input type="text" id="cattleId" name="cattleId" required><br>
 
-        <label for="cattleName">Cattle Name:</label>
-        <input type="text" id="cattleName" name="cattleName" required><br>
+    <h2>Add Cattle Data</h2>
+    <label for="cattleId">Cattle ID:</label>
+    <input type="text" id="cattleId"><br>
+    <label for="cattleName">Cattle Name:</label>
+    <input type="text" id="cattleName"><br>
+    <label for="feedTime">Feed Time (HH:MM):</label>
+    <input type="text" id="feedTime"><br>
+    <label for="food">Food:</label>
+    <input type="text" id="food"><br>
+    <button onclick="addData()">Add</button>
 
-        <label for="feedTime">Feed Time (HH:MM):</label>
-        <input type="text" id="feedTime" name="feedTime" required><br>
+    <h2>Remove Cattle Data</h2>
+    <label for="removeCattleId">Cattle ID to remove:</label>
+    <input type="text" id="removeCattleId"><br>
+    <button onclick="removeData()">Remove</button>
 
-        <label for="food">Food:</label>
-        <input type="text" id="food" name="food" required><br>
+    <h2>Display Cattle Data</h2>
+    <button onclick="displayData()">Display Data</button>
+    <button onclick="displayDataByTime()">Display Data by Time</button>
 
-        <input type="submit" value="Add Cattle Data">
-    </form>
-
-    <form action="remove_data.php" method="post">
-        <label for="removeCattleId">Enter Cattle ID to remove:</label>
-        <input type="text" id="removeCattleId" name="removeCattleId" required><br>
-
-        <input type="submit" value="Remove Cattle Data">
-    </form>
-
-    <form action="display_data.php" method="post">
-        <input type="submit" name="displayByTime" value="Display Cattle Data Sorted by Time">
-        <input type="submit" name="displayById" value="Display Cattle Data Sorted by ID">
-    </form>
+    <h2>Data Display:</h2>
+    <div id="dataDisplay"></div>
 </body>
 </html>
