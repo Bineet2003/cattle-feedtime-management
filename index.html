@@ -65,12 +65,7 @@
             if (cattleData) {
                 var cattleList = JSON.parse(cattleData);
 
-                // Sort the cattle data by cattle ID in ascending order
-                cattleList.sort(function(a, b) {
-                    return a.cattleId.localeCompare(b.cattleId);
-                });
-
-                // Generate HTML table
+                // Display the cattle data on the webpage
                 var table = "<table>";
                 table += "<tr><th>Cattle ID</th><th>Cattle Name</th><th>Feed Time</th><th>Food</th></tr>";
 
@@ -86,7 +81,6 @@
 
                 table += "</table>";
 
-                // Display the table on the webpage
                 document.getElementById("dataDisplay").innerHTML = table;
             }
         }
@@ -97,16 +91,31 @@
             if (cattleData) {
                 var cattleList = JSON.parse(cattleData);
 
-                // Sort the cattle data by feed time
+                // Get the current date and time
+                var currentDate = new Date();
+
+                // Calculate the time difference and add 24 hours if it's negative
+                cattleList.forEach(function(cattle) {
+                    var feedTimeParts = cattle.feedTime.split(":");
+                    var feedTime = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), feedTimeParts[0], feedTimeParts[1]);
+
+                    var timeDiff = feedTime.getTime() - currentDate.getTime();
+                    if (timeDiff < 0) {
+                        feedTime.setDate(feedTime.getDate() + 1);
+                        timeDiff = feedTime.getTime() - currentDate.getTime();
+                    }
+
+                    cattle.timeDifference = timeDiff;
+                });
+
+                // Sort the cattle data by time difference in ascending order
                 cattleList.sort(function(a, b) {
-                    var timeA = new Date("1970/01/01 " + a.feedTime);
-                    var timeB = new Date("1970/01/01 " + b.feedTime);
-                    return timeA - timeB;
+                    return a.timeDifference - b.timeDifference;
                 });
 
                 // Generate HTML table
                 var table = "<table>";
-                table += "<tr><th>Cattle ID</th><th>Cattle Name</th><th>Feed Time</th><th>Food</th></tr>";
+                table += "<tr><th>Cattle ID</th><th>Cattle Name</th><th>Feed Time</th><th>Food</th><th>Time Difference</th></tr>";
 
                 for (var i = 0; i < cattleList.length; i++) {
                     var cattle = cattleList[i];
@@ -115,6 +124,7 @@
                     table += "<td>" + cattle.cattleName + "</td>";
                     table += "<td>" + cattle.feedTime + "</td>";
                     table += "<td>" + cattle.food + "</td>";
+                    table += "<td>" + formatTimeDifference(cattle.timeDifference) + "</td>";
                     table += "</tr>";
                 }
 
@@ -123,6 +133,12 @@
                 // Display the table on the webpage
                 document.getElementById("dataDisplay").innerHTML = table;
             }
+        }
+
+        function formatTimeDifference(timeDifference) {
+            var hours = Math.floor(timeDifference / (1000 * 60 * 60));
+            var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            return hours + "h " + minutes + "m";
         }
     </script>
 </head>
