@@ -65,17 +65,24 @@
             if (cattleData) {
                 var cattleList = JSON.parse(cattleData);
 
-                // Display the cattle data on the webpage
-                var output = "";
+                // Generate HTML table
+                var table = "<table>";
+                table += "<tr><th>Cattle ID</th><th>Cattle Name</th><th>Feed Time</th><th>Food</th></tr>";
+
                 for (var i = 0; i < cattleList.length; i++) {
                     var cattle = cattleList[i];
-                    output += "<p>Cattle ID: " + cattle.cattleId + "</p>";
-                    output += "<p>Cattle Name: " + cattle.cattleName + "</p>";
-                    output += "<p>Feed Time: " + cattle.feedTime + "</p>";
-                    output += "<p>Food: " + cattle.food + "</p>";
-                    output += "<hr>";
+                    table += "<tr>";
+                    table += "<td>" + cattle.cattleId + "</td>";
+                    table += "<td>" + cattle.cattleName + "</td>";
+                    table += "<td>" + cattle.feedTime + "</td>";
+                    table += "<td>" + cattle.food + "</td>";
+                    table += "</tr>";
                 }
-                document.getElementById("dataDisplay").innerHTML = output;
+
+                table += "</table>";
+
+                // Display the table on the webpage
+                document.getElementById("dataDisplay").innerHTML = table;
             }
         }
 
@@ -92,17 +99,24 @@
                     return timeA - timeB;
                 });
 
-                // Display the cattle data sorted by feed time on the webpage
-                var output = "";
+                // Generate HTML table
+                var table = "<table>";
+                table += "<tr><th>Cattle ID</th><th>Cattle Name</th><th>Feed Time</th><th>Food</th></tr>";
+
                 for (var i = 0; i < cattleList.length; i++) {
                     var cattle = cattleList[i];
-                    output += "<p>Cattle ID: " + cattle.cattleId + "</p>";
-                    output += "<p>Cattle Name: " + cattle.cattleName + "</p>";
-                    output += "<p>Feed Time: " + cattle.feedTime + "</p>";
-                    output += "<p>Food: " + cattle.food + "</p>";
-                    output += "<hr>";
+                    table += "<tr>";
+                    table += "<td>" + cattle.cattleId + "</td>";
+                    table += "<td>" + cattle.cattleName + "</td>";
+                    table += "<td>" + cattle.feedTime + "</td>";
+                    table += "<td>" + cattle.food + "</td>";
+                    table += "</tr>";
                 }
-                document.getElementById("dataDisplay").innerHTML = output;
+
+                table += "</table>";
+
+                // Display the table on the webpage
+                document.getElementById("dataDisplay").innerHTML = table;
             }
         }
     </script>
