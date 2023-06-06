@@ -6,20 +6,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
     <script>
         // JavaScript code for Cattle Data Management
 
@@ -78,27 +64,11 @@
             var cattleData = localStorage.getItem("cattleData");
             if (cattleData) {
                 var cattleList = JSON.parse(cattleData);
-        
-                // Get the current time
-                var currentTime = new Date();
-        
-                // Filter cattle data with feed time after the current time
-                var filteredCattleList = cattleList.filter(function(cattle) {
-                    var feedTime = new Date("1970/01/01 " + cattle.feedTime);
-                    return feedTime > currentTime;
-                });
-        
-                // Sort the filtered cattle data by feed time
-                filteredCattleList.sort(function(a, b) {
-                    var timeA = new Date("1970/01/01 " + a.feedTime);
-                    var timeB = new Date("1970/01/01 " + b.feedTime);
-                    return timeA - timeB;
-                });
-        
-                // Display the filtered and sorted cattle data
+
+                // Display the cattle data on the webpage
                 var output = "";
-                for (var i = 0; i < filteredCattleList.length; i++) {
-                    var cattle = filteredCattleList[i];
+                for (var i = 0; i < cattleList.length; i++) {
+                    var cattle = cattleList[i];
                     output += "<p>Cattle ID: " + cattle.cattleId + "</p>";
                     output += "<p>Cattle Name: " + cattle.cattleName + "</p>";
                     output += "<p>Feed Time: " + cattle.feedTime + "</p>";
@@ -108,81 +78,33 @@
                 document.getElementById("dataDisplay").innerHTML = output;
             }
         }
-        
 
         function displayDataByTime() {
             // Retrieve existing cattle data from Local Storage
             var cattleData = localStorage.getItem("cattleData");
             if (cattleData) {
                 var cattleList = JSON.parse(cattleData);
-        
-                // Get the current time
-                var currentTime = new Date();
-        
-                // Filter cattle data with feed time after the current time
-                var filteredCattleList = cattleList.filter(function(cattle) {
-                    var feedTime = new Date("1970/01/01 " + cattle.feedTime);
-                    return feedTime > currentTime;
-                });
-        
-                // Sort the filtered cattle data by feed time
-                filteredCattleList.sort(function(a, b) {
+
+                // Sort the cattle data by feed time
+                cattleList.sort(function(a, b) {
                     var timeA = new Date("1970/01/01 " + a.feedTime);
                     var timeB = new Date("1970/01/01 " + b.feedTime);
                     return timeA - timeB;
                 });
-        
-                // Display the current time above the table
-                var currentTimeDisplay = document.createElement("p");
-                currentTimeDisplay.textContent = "Current Time: " + currentTime.toLocaleTimeString();
-                document.getElementById("dataDisplay").innerHTML = "";
-                document.getElementById("dataDisplay").appendChild(currentTimeDisplay);
-        
-                // Create the table element
-                var table = document.createElement("table");
-                table.classList.add("data-table");
-        
-                // Create the table header row
-                var thead = document.createElement("thead");
-                var headerRow = document.createElement("tr");
-                var headers = ["Cattle ID", "Cattle Name", "Feed Time", "Food"];
-                for (var i = 0; i < headers.length; i++) {
-                    var headerCell = document.createElement("th");
-                    headerCell.textContent = headers[i];
-                    headerRow.appendChild(headerCell);
+
+                // Display the cattle data sorted by feed time on the webpage
+                var output = "";
+                for (var i = 0; i < cattleList.length; i++) {
+                    var cattle = cattleList[i];
+                    output += "<p>Cattle ID: " + cattle.cattleId + "</p>";
+                    output += "<p>Cattle Name: " + cattle.cattleName + "</p>";
+                    output += "<p>Feed Time: " + cattle.feedTime + "</p>";
+                    output += "<p>Food: " + cattle.food + "</p>";
+                    output += "<hr>";
                 }
-                thead.appendChild(headerRow);
-        
-                // Create the table body
-                var tbody = document.createElement("tbody");
-        
-                // Add rows to the table body with filtered and sorted cattle data
-                for (var i = 0; i < filteredCattleList.length; i++) {
-                    var cattle = filteredCattleList[i];
-                    var row = document.createElement("tr");
-        
-                    // Create cells for each property in cattle object
-                    for (var property in cattle) {
-                        var cell = document.createElement("td");
-                        cell.textContent = cattle[property];
-                        row.appendChild(cell);
-                    }
-        
-                    tbody.appendChild(row);
-                }
-        
-                // Add table header and rows to the table
-                table.appendChild(thead);
-                table.appendChild(tbody);
-        
-                // Append the table to the dataDisplay div element
-                document.getElementById("dataDisplay").appendChild(table);
+                document.getElementById("dataDisplay").innerHTML = output;
             }
         }
-        
-        
-        
-        
     </script>
 </head>
 <body>
