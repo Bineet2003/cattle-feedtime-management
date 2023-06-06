@@ -65,6 +65,11 @@
             if (cattleData) {
                 var cattleList = JSON.parse(cattleData);
 
+                // Sort the cattle data by cattle ID in ascending order
+                cattleList.sort(function(a, b) {
+                    return a.cattleId.localeCompare(b.cattleId);
+                });
+
                 // Generate HTML table
                 var table = "<table>";
                 table += "<tr><th>Cattle ID</th><th>Cattle Name</th><th>Feed Time</th><th>Food</th></tr>";
